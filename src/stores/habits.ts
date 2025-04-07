@@ -58,7 +58,7 @@ export const useHabitsStore = defineStore(
     }
 
     function deleteHabit(index: number) {
-      habits.value = habits.value.filter((_,i) => i !== index);
+      habits.value = habits.value.filter((_, i) => i !== index);
     }
 
     return {
@@ -80,7 +80,6 @@ export const useHabitsStore = defineStore(
             h.recentDate = dayjs(h.recentDate);
           });
           parsed.calender.recentDate = dayjs(parsed.calender.recentDate);
-          console.log("deserialize実行:", parsed);
           return parsed;
         },
       },

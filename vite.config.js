@@ -19,8 +19,8 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       manifest: {
-        name: "習慣記録アプリ",
-        short_name: "習慣記録",
+        name: "Habby - 習慣記録アプリ",
+        short_name: "Habby",
         start_url: "/",
         display: "standalone",
         background_color: "#ffffff",
@@ -29,6 +29,11 @@ export default defineConfig({
           {
             src: "/img/icons/favicon.png",
             sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "/img/icons/favicon-512.png",
+            sizes: "512x512",
             type: "image/png",
           },
         ],
