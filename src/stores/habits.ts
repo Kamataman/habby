@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
 
 import { Habit } from "../types/habit";
@@ -89,5 +89,5 @@ export const useHabitsStore = defineStore(
         },
       },
     },
-  }
+  } as any // IDEのエラー無視
 );
