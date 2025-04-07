@@ -14,19 +14,16 @@ export const useHabitsStore = defineStore(
     // 初期状態を定義
     const habits = ref([
       {
-        id: 0,
         name: "ベンチプレス",
         streak: 0,
         recentDate: dayjs("2025-3-1"),
       },
       {
-        id: 1,
         name: "読書",
         streak: 4,
         recentDate: dayjs("2025-4-3"),
       },
       {
-        id: 2,
         name: "掃除",
         streak: 2,
         recentDate: dayjs("2025-4-2"),
@@ -41,15 +38,14 @@ export const useHabitsStore = defineStore(
     // アクション（状態変更を定義）
     function addHabit(name: string) {
       habits.value.push({
-        id: habits.value.length,
         name: name,
         streak: 0,
         recentDate: dayjs("2000-1-1"),
       });
     }
 
-    function todayDone(id: number) {
-      const habit = habits.value.find((h) => h.id === id);
+    function todayDone(index: number) {
+      const habit = habits.value[index];
       if (habit === undefined) return;
       if (dayjs().diff(habit.recentDate) / (24 * 60 * 60 * 1000) >= 2) {
         habit.streak = 1;
@@ -61,8 +57,8 @@ export const useHabitsStore = defineStore(
       calender.value.counts[0]++;
     }
 
-    function deleteHabit(id: number) {
-      habits.value = habits.value.filter((h) => h.id !== id);
+    function deleteHabit(index: number) {
+      habits.value = habits.value.filter((_,i) => i !== index);
     }
 
     return {

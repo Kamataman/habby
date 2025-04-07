@@ -19,11 +19,11 @@ function addHabit() {
   habitsStore.addHabit(newhabit.value);
   newhabit.value = "";
 }
-function doneHabit(id: number) {
-  habitsStore.todayDone(id);
+function doneHabit(index: number) {
+  habitsStore.todayDone(index);
 }
-function deleteHabit(id: number) {
-  habitsStore.deleteHabit(id);
+function deleteHabit(index: number) {
+  habitsStore.deleteHabit(index);
 }
 
 // calenderの日付チェック
@@ -49,11 +49,11 @@ if (!habitsStore.calender.recentDate.isSame(dayjs(), "day")) {
       <div>
         <h3>習慣一覧</h3>
         <q-list>
-          <template v-for="habit in habitsStore.habits" :key="habit.id">
+          <template v-for="(habit,index) in habitsStore.habits" :key="index">
             <HabitCard
               :habit="habit"
-              @done="doneHabit(habit.id)"
-              @delete="deleteHabit(habit.id)"
+              @done="doneHabit(index)"
+              @delete="deleteHabit(index)"
             />
           </template>
         </q-list>
