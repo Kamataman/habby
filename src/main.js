@@ -4,7 +4,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from "./App.vue";
 import "./registerServiceWorker";
 
-import { Quasar } from "quasar";
+import { Quasar, Notify } from "quasar";
 import quasarLang from "quasar/lang/ja";
 
 // Import icon libraries
@@ -20,7 +20,7 @@ const app = createApp(App);
 app.use(pinia);
 
 app.use(Quasar, {
-  plugins: {}, // import Quasar plugins and add here
+  plugins: {Notify}, // import Quasar plugins and add here
   lang: quasarLang,
 });
 

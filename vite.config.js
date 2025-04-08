@@ -10,7 +10,7 @@ import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',
+  base: "./",
   plugins: [
     vue({
       template: { transformAssetUrls },

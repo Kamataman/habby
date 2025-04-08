@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { useQuasar } from "quasar";
 import type { Habit } from "../types/habit";
 
 import dayjs from "dayjs";
@@ -7,13 +8,12 @@ import ja from "dayjs/locale/ja";
 /** NOTE: location(Japan)を設定する */
 dayjs.locale(ja);
 
-// const habit = defineModel<Habit>({ required: true });
 const emit = defineEmits(["done", "delete"]);
 const props = defineProps<{
   habit: Habit;
 }>();
 
-
+const $q = useQuasar();
 
 const checked = computed(() => props.habit.recentDate.isSame(dayjs(), "day"));
 const checkedYesterday = computed(() =>
@@ -21,14 +21,15 @@ const checkedYesterday = computed(() =>
 );
 
 function doneHabit() {
+  $q.notify({
+    type: "positive",
+    message: "よくできました！💯 今日も継続！",
+    timeout: 2000,
+    position: "top", // top, bottom, center など
+  });
   emit("done");
 }
 
-// function doneCheckbox(checked: boolean) {
-//   if (checked) {
-//     habit.value.todayDone(habit.value.id)
-//   }
-  
 function deleteHabit() {
   if (window.confirm("削除しますか？")) {
     emit("delete");
@@ -40,7 +41,6 @@ function deleteHabit() {
   <q-item>
     <q-item-section>
       <q-item-label> {{ habit.name }} </q-item-label>
-
       <q-item-label caption>
         <q-checkbox
           :model-value="checked"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import HabitCard from "./HabitCard.vue";
+import { computed } from "vue";
+import ProgressBar from "./ProgressBar.vue";
+import HabitCardList from "./HabitCardList.vue";
 import HabitCalender from "./HabitCalender.vue";
 
 import { useHabitsStore } from "../stores/habits";
@@ -10,25 +11,16 @@ import ja from "dayjs/locale/ja";
 /** NOTE: location(Japan)を設定する */
 dayjs.locale(ja);
 
-const newhabit = ref("");
 const habitsStore = useHabitsStore();
 
-const prompt = ref(false);
+const progress = computed(
+  () =>
+    habitsStore.habits.filter((_) => _.recentDate.isSame(dayjs(), "day"))
+      .length / habitsStore.habits.length
+);
 
-function addHabit() {
-  habitsStore.addHabit(newhabit.value);
-  newhabit.value = "";
-}
-function doneHabit(index: number) {
-  habitsStore.todayDone(index);
-}
-function deleteHabit(index: number) {
-  habitsStore.deleteHabit(index);
-}
-
-// calenderの日付チェック
+// calenderの日付が今日じゃなければスライドして今日にする
 if (!habitsStore.calender.recentDate.isSame(dayjs(), "day")) {
-  // 必要に応じて処理を書く
   habitsStore.calender.counts = (function (arr: number[], n: number): number[] {
     if (n <= 0) return arr.slice(); // 0以下ならそのままコピー
     return Array(n)
@@ -46,46 +38,9 @@ if (!habitsStore.calender.recentDate.isSame(dayjs(), "day")) {
   <q-layout view="hHh lpr fFf">
     <q-header> Habby - 習慣記録アプリ</q-header>
     <q-page-container class="column content-center">
-      <div>
-        <h3>習慣一覧</h3>
-        <q-list>
-          <template v-for="(habit,index) in habitsStore.habits" :key="index">
-            <HabitCard
-              :habit="habit"
-              @done="doneHabit(index)"
-              @delete="deleteHabit(index)"
-            />
-          </template>
-        </q-list>
-        <div class="flex justify-end" style="margin: 10px">
-          <q-btn label="+" color="primary" @click="prompt = true" />
-        </div>
-        <q-dialog v-model="prompt">
-          <q-card style="min-width: 350px">
-            <q-card-section>
-              <div class="text-h6">習慣名</div>
-            </q-card-section>
-            <q-form @submit="addHabit">
-              <q-card-section class="q-pt-none">
-                <q-input
-                  dense
-                  v-model="newhabit"
-                  autofocus
-                  @keyup.enter="prompt = false"
-                  :rules="[(val: string) => !!val || '入力必須です']"
-                />
-              </q-card-section>
-
-              <q-card-actions :align="'right'" class="text-primary">
-                <q-btn type="submit" flat label="追加" v-close-popup />
-              </q-card-actions>
-            </q-form>
-          </q-card>
-        </q-dialog>
-      </div>
-      <div>
-        <HabitCalender :calender="habitsStore.calender.counts" />
-      </div>
+      <ProgressBar :progress="progress"></ProgressBar>
+      <HabitCardList />
+      <HabitCalender :calender="habitsStore.calender.counts" />
     </q-page-container>
   </q-layout>
 </template>
