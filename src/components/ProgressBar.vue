@@ -8,7 +8,7 @@ const props = defineProps<{
   <div>
     <h3>今日の進捗率</h3>
     <div class="content-center">
-      <span>{{ progress * 100 }}%達成！</span>
+      <span>{{ Math.ceil(progress * 100) }}%達成！</span>
       <q-linear-progress
         :value="progress"
         color="positive"
